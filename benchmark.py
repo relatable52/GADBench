@@ -4,6 +4,7 @@ from utils import *
 import pandas
 import os
 import warnings
+import pickle
 warnings.filterwarnings("ignore")
 seed_list = list(range(3407, 10000, 10))
 
@@ -71,7 +72,8 @@ for model in models:
             # if model in ['GHRN', 'KNNGCN', 'AMNet', 'GT', 'GAT', 'GATv2', 'GATSep', 'PNA']:   # require more than 24G GPU memory
                 # continue
 
-        auc_list, pre_list, rec_list = [], [], []
+        auc_list, pre_list, rec_list, precision_list, recall_list, f1_list = [], [], [], [], [], []
+        results_list = []
         for t in range(args.trials):
             torch.cuda.empty_cache()
             print("Dataset {}, Model {}, Trial {}".format(dataset_name, model, t))
@@ -84,6 +86,10 @@ for model in models:
             print(detector.model)
             test_score = detector.train()
             auc_list.append(test_score['AUROC']), pre_list.append(test_score['AUPRC']), rec_list.append(test_score['RecK'])
+            precision_list.appen(test_score['classification_report']['0']['precision'])
+            recall_list.appen(test_score['classification_report']['0']['recall'])
+            f1_list.appen(test_score['classification_report']['0']['f1-score'])
+            results_list.append(test_score)
             ed = time.time()
             time_cost += ed - st
         del detector, data
@@ -93,9 +99,20 @@ for model in models:
         model_result[dataset_name+'-AUPRC mean'] = np.mean(pre_list)
         model_result[dataset_name+'-AUPRC std'] = np.std(pre_list)
         model_result[dataset_name+'-RecK mean'] = np.mean(rec_list)
-        model_result[dataset_name+'-RecK std'] = np.std(rec_list)
+        model_result[dataset_name+'-Precision mean'] = np.mean(precision_list)
+        model_result[dataset_name+'-Precision std'] = np.std(precision_list)
+        model_result[dataset_name+'-Recall mean'] = np.mean(recall_list)
+        model_result[dataset_name+'-Recall std'] = np.std(recall_list)
+        model_result[dataset_name+'-F1 mean'] = np.mean(f1_list)
+        model_result[dataset_name+'-F1 std'] = np.std(f1_list)
         model_result[dataset_name+'-Time'] = time_cost/args.trials
+        
     model_result = pandas.DataFrame(model_result, index=[0])
     results = pandas.concat([results, model_result])
     file_id = save_results(results, file_id)
+    
+    model_result_pickle = os.path.joint("results", f"{model}.pkl")
+    with open(model_result_pickle, 'wb') as f:
+        pickle.dump(results_list, f)
+    
     print(results)
