@@ -89,6 +89,7 @@ for model in models:
             # precision_list.append(test_score['classification_report']['0']['precision'])
             # recall_list.append(test_score['classification_report']['0']['recall'])
             # f1_list.append(test_score['classification_report']['0']['f1-score'])
+            print(test_score)
             results_list.append(test_score)
             ed = time.time()
             time_cost += ed - st
@@ -111,7 +112,7 @@ for model in models:
     results = pandas.concat([results, model_result])
     file_id = save_results(results, file_id)
     
-    model_result_pickle = os.path.joint("results", f"{model}.pkl")
+    model_result_pickle = os.path.join("results", f"{model}.pkl")
     with open(model_result_pickle, 'wb') as f:
         pickle.dump(results_list, f)
     
