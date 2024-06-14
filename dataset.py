@@ -145,3 +145,6 @@ def main():
     print("Processing data ...")
     process()
     print("Done")
+
+if __name__ == "__main__":
+    main()
