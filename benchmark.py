@@ -86,9 +86,9 @@ for model in models:
             print(detector.model)
             test_score = detector.train()
             auc_list.append(test_score['AUROC']), pre_list.append(test_score['AUPRC']), rec_list.append(test_score['RecK'])
-            precision_list.append(test_score['classification_report']['0']['precision'])
-            recall_list.append(test_score['classification_report']['0']['recall'])
-            f1_list.append(test_score['classification_report']['0']['f1-score'])
+            precision_list.append(test_score['classification_report']['1']['precision'])
+            recall_list.append(test_score['classification_report']['1']['recall'])
+            f1_list.append(test_score['classification_report']['1']['f1-score'])
             results_list.append(test_score)
             ed = time.time()
             time_cost += ed - st
