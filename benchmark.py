@@ -89,7 +89,6 @@ for model in models:
             precision_list.append(test_score['classification_report']['0']['precision'])
             recall_list.append(test_score['classification_report']['0']['recall'])
             f1_list.append(test_score['classification_report']['0']['f1-score'])
-            print(test_score)
             results_list.append(test_score)
             ed = time.time()
             time_cost += ed - st
