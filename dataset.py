@@ -111,11 +111,11 @@ def process(mode='af'):
     marks = labels[:,1]!='unknown'
     if(mode=='af'):
         features = node_features[:,1:]
-        save_path = 'dataset/elliptic'
+        save_path = 'datasets/elliptic'
         data_name = "elliptic"
     elif(mode=='lf'):
         features = node_features[:,1:95]
-        save_path = 'dataset/elliptic_lf'
+        save_path = 'datasets/elliptic_lf'
         data_name = "elliptic_lf"
     else:
         raise NotImplementedError
