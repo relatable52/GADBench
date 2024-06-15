@@ -30,7 +30,7 @@ args = parser.parse_args()
 columns = ['name']
 new_row = {}
 datasets = ['reddit', 'weibo', 'amazon', 'yelp', 'tfinance',
-            'elliptic', 'tolokers', 'questions', 'dgraphfin', 'tsocial', 'hetero/amazon', 'hetero/yelp']
+            'elliptic', 'elliptic_lf', 'tolokers', 'questions', 'dgraphfin', 'tsocial', 'hetero/amazon', 'hetero/yelp']
 models = model_detector_dict.keys()
 
 if args.datasets is not None:

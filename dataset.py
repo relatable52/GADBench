@@ -98,7 +98,7 @@ class Dataset:
         self.graph.ndata['val_masks'] = val_masks
         self.graph.ndata['test_masks'] = test_masks
 
-def process():
+def process(mode='af'):
     labels = pandas.read_csv('/kaggle/input/elliptic-data-set/elliptic_bitcoin_dataset/elliptic_txs_classes.csv').to_numpy()
     node_features = pandas.read_csv('/kaggle/input/elliptic-data-set/elliptic_bitcoin_dataset/elliptic_txs_features.csv', header=None).to_numpy()
 
@@ -109,7 +109,16 @@ def process():
 
     new_labels = np.zeros(labels.shape[0]).astype(int)
     marks = labels[:,1]!='unknown'
-    features = node_features[:,1:]
+    if(mode=='af'):
+        features = node_features[:,1:]
+        save_path = 'dataset/elliptic'
+        data_name = "elliptic"
+    elif(mode=='lf'):
+        features = node_features[:,1:95]
+        save_path = 'dataset/elliptic_lf'
+        data_name = "elliptic_lf"
+    else:
+        raise NotImplementedError
     new_labels[labels[:,1]=='1']=1
 
     train_mask = (features[:,0]<=25)&marks
@@ -132,18 +141,20 @@ def process():
     graph.ndata['label'] = torch.tensor(new_labels)
     graph.ndata['feature'] = torch.tensor(features)
 
-    dgl.save_graphs('datasets/elliptic', [graph])
-    
-    for data_name in ['elliptic']:
-        data = Dataset(data_name)
-        data.split()
-        print(data.graph)
-        print(data.graph.ndata['train_masks'].sum(0), data.graph.ndata['val_masks'].sum(0), data.graph.ndata['test_masks'].sum(0))
-        dgl.save_graphs('datasets/'+data_name, [data.graph])
+    dgl.save_graphs(save_path, [graph])
+
+    data = Dataset(data_name)
+    data.split()
+    print(data.graph)
+    print(data.graph.ndata['train_masks'].sum(0), data.graph.ndata['val_masks'].sum(0), data.graph.ndata['test_masks'].sum(0))
+    dgl.save_graphs('datasets/'+data_name, [data.graph])
 
 def main():
     print("Processing data ...")
-    process()
+    process('af')
+    print("Done")
+    print("Processing data ...")
+    process('lf')
     print("Done")
 
 if __name__ == "__main__":
