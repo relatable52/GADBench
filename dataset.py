@@ -67,7 +67,7 @@ class Dataset:
             train_ratio, val_ratio = 0.5, 0.25
         if self.name in ['tsocial', 'tfinance', 'reddit', 'weibo']:
             train_ratio, val_ratio = 0.4, 0.2
-        if self.name in ['amazon', 'yelp', 'elliptic', 'dgraphfin']:  # official split
+        if self.name in ['amazon', 'yelp', 'elliptic', 'elliptic_lf', 'dgraphfin']:  # official split
             train_masks[:,:10] = self.graph.ndata['train_mask'].repeat(10,1).T
             val_masks[:,:10] = self.graph.ndata['val_mask'].repeat(10,1).T
             test_masks[:,:10] = self.graph.ndata['test_mask'].repeat(10,1).T
