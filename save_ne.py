@@ -56,8 +56,8 @@ test_score = detector.train()
 gcn_model = detector.model
 graph = detector.source_graph
 h = gcn_model.get_hidden_state(graph)
-h = pandas.DataFrame(h.cpu().detach().numpy())
+h = pandas.DataFrame(h.cpu().detach().numpy(), columns=[f"ne_{i}" for i in range(32)])
 feat = pandas.DataFrame(graph.ndata['feature'].cpu().numpy())
 res = pandas.concat([feat, h], axis=1)
-print(res)
+res.to_csv("/kaggle/working/elliptic_lf_ne.csv", index=False, header=False)
 
