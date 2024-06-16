@@ -121,6 +121,10 @@ def process(mode='af'):
         features = node_features[:,1:95]
         save_path = 'datasets/elliptic_lf'
         data_name = "elliptic_lf"
+    elif(mode=='lf_ne'):
+        features = node_features[:,1:]
+        save_path = 'datasets/elliptic_lf_ne'
+        data_name = "elliptic_lf_ne"
     else:
         raise NotImplementedError
     new_labels[labels[:,1]=='1']=1
