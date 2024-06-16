@@ -112,6 +112,7 @@ def process(mode='af'):
         node_dict[i] = labels[i][0]
 
     new_labels = np.zeros(labels.shape[0]).astype(int)
+    
     marks = labels[:,1]!='unknown'
     if(mode=='af'):
         features = node_features[:,1:]
@@ -127,6 +128,7 @@ def process(mode='af'):
         data_name = "elliptic_lf_ne"
     else:
         raise NotImplementedError
+    
     new_labels[labels[:,1]=='1']=1
 
     train_mask = (features[:,0]<=25)&marks
@@ -154,7 +156,8 @@ def process(mode='af'):
     data = Dataset(data_name)
     data.split()
     print(data.graph)
-    print(data.graph.ndata['train_masks'].sum(0), data.graph.ndata['val_masks'].sum(0), data.graph.ndata['test_masks'].sum(0))
+    print(data.graph.ndata['train_masks'], data.graph.ndata['val_masks'], data.graph.ndata['test_masks'])
+    print(data.graph.ndata['label'])
     dgl.save_graphs('datasets/'+data_name, [data.graph])
 
 def get_args():
