@@ -57,7 +57,7 @@ gcn_model = detector.model
 graph = detector.source_graph
 h = gcn_model.get_hidden_state(graph)
 h = pandas.DataFrame(h.cpu().detach().numpy())
-feat = pandas.DataFrame(graph.ndata['feature'].cpu.numpy())
+feat = pandas.DataFrame(graph.ndata['feature'].cpu().numpy())
 res = pandas.concat([feat, h], axis=1)
 print(res)
 
