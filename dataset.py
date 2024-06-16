@@ -114,6 +114,7 @@ def process(mode='af'):
     new_labels = np.zeros(labels.shape[0]).astype(int)
     
     marks = labels[:,1]!='unknown'
+    
     if(mode=='af'):
         features = node_features[:,1:]
         save_path = 'datasets/elliptic'
@@ -123,7 +124,7 @@ def process(mode='af'):
         save_path = 'datasets/elliptic_lf'
         data_name = "elliptic_lf"
     elif(mode=='lf_ne'):
-        features = node_features[:,1:]
+        features = node_features
         save_path = 'datasets/elliptic_lf_ne'
         data_name = "elliptic_lf_ne"
     else:
