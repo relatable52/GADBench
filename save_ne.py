@@ -56,7 +56,7 @@ test_score = detector.train()
 gcn_model = detector.model
 graph = detector.source_graph
 h = gcn_model.get_hidden_state(graph)
-print(graph.nodes)
+print(graph.nodes())
 print(h, h.shape)
 print(graph.ndata['feature'])
 
