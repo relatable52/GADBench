@@ -67,7 +67,7 @@ class Dataset:
             train_ratio, val_ratio = 0.5, 0.25
         if self.name in ['tsocial', 'tfinance', 'reddit', 'weibo']:
             train_ratio, val_ratio = 0.4, 0.2
-        if self.name in ['amazon', 'yelp', 'elliptic', 'elliptic_lf', 'dgraphfin']:  # official split
+        if self.name in ['amazon', 'yelp', 'elliptic', 'elliptic_lf', 'elliptic_lf_ne', 'dgraphfin']:  # official split
             train_masks[:,:10] = self.graph.ndata['train_mask'].repeat(10,1).T
             val_masks[:,:10] = self.graph.ndata['val_mask'].repeat(10,1).T
             test_masks[:,:10] = self.graph.ndata['test_mask'].repeat(10,1).T
@@ -100,7 +100,10 @@ class Dataset:
 
 def process(mode='af'):
     labels = pandas.read_csv('/kaggle/input/elliptic-data-set/elliptic_bitcoin_dataset/elliptic_txs_classes.csv').to_numpy()
-    node_features = pandas.read_csv('/kaggle/input/elliptic-data-set/elliptic_bitcoin_dataset/elliptic_txs_features.csv', header=None).to_numpy()
+    if mode == "lf_ne":
+        node_features = pandas.read_csv('/kaggle/working/elliptic_lf_ne.csv', header=None).to_numpy()
+    else:
+        node_features = pandas.read_csv('/kaggle/input/elliptic-data-set/elliptic_bitcoin_dataset/elliptic_txs_features.csv', header=None).to_numpy()
 
     node_dict = bidict.bidict()
 
