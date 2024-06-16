@@ -53,10 +53,7 @@ class BaseDetector(object):
                 labels = labels.cpu().numpy()
             if torch.is_tensor(probs):
                 probs = probs.cpu().numpy()
-            try:
-                score['AUROC'] = roc_auc_score(labels, probs)
-            except:
-                print(labels, probs)
+            score['AUROC'] = roc_auc_score(labels, probs)
             score['AUPRC'] = average_precision_score(labels, probs)
             score['roc_curve'] = roc_curve(labels, probs)
             score['pr_curve'] = precision_recall_curve(labels, probs)
@@ -431,6 +428,7 @@ class RFDetector(BaseDetector):
         test_X = self.source_graph.ndata['feature'][self.test_mask].cpu().numpy()
         test_y = self.source_graph.ndata['label'][self.test_mask].cpu().numpy()
         weights = np.where(train_y == 0, 1, self.weight)
+        print(val_y)
         self.model.fit(train_X, train_y, sample_weight=weights)
         pred_val_y = self.model.predict_proba(val_X)[:, 1]
         pred_y = self.model.predict_proba(test_X)[:, 1]
