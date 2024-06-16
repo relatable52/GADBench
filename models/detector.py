@@ -53,7 +53,10 @@ class BaseDetector(object):
                 labels = labels.cpu().numpy()
             if torch.is_tensor(probs):
                 probs = probs.cpu().numpy()
-            score['AUROC'] = roc_auc_score(labels, probs)
+            try:
+                score['AUROC'] = roc_auc_score(labels, probs)
+            except:
+                print(labels, probs)
             score['AUPRC'] = average_precision_score(labels, probs)
             score['roc_curve'] = roc_curve(labels, probs)
             score['pr_curve'] = precision_recall_curve(labels, probs)
