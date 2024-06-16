@@ -8,6 +8,7 @@ import pandas
 import bidict
 from dgl.data import FraudAmazonDataset, FraudYelpDataset
 from sklearn.model_selection import train_test_split
+from argparse import ArgumentParser
 
 def set_seed(seed=3407):
     os.environ['PYTHONHASHSEED'] = str(seed)
@@ -152,12 +153,16 @@ def process(mode='af'):
     print(data.graph.ndata['train_masks'].sum(0), data.graph.ndata['val_masks'].sum(0), data.graph.ndata['test_masks'].sum(0))
     dgl.save_graphs('datasets/'+data_name, [data.graph])
 
+def get_args():
+    parser = ArgumentParser()
+    parser.add_argument("--mode", type=str, default="af")
+    return parser.parse_args()
+
 def main():
-    print("Processing data ...")
-    process('af')
-    print("Done")
-    print("Processing data ...")
-    process('lf')
+    args = get_args()
+    mode = args.mode
+    print(f"Processing {mode} ...")
+    process(mode)
     print("Done")
 
 if __name__ == "__main__":
