@@ -201,6 +201,14 @@ class GCN(nn.Module):
             h = layer(graph, h)
         h = self.mlp(h, False)
         return h
+    
+    def get_hidden_state(self, graph):
+        h = graph.ndata['feature']
+        for i, layer in enumerate(self.layers):
+            if i != 0:
+                h = self.dropout(h)
+            h = layer(graph, h)
+        return h
 
 
 class RGCN(nn.Module):
