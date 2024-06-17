@@ -38,10 +38,10 @@ train_config = {
             'inductive': bool(args.inductive)
         }
 
-dataset_name = "elliptic_lf"
+dataset_name = "elliptic"
 model = "GCN"
 data = Dataset(dataset_name)
-model_config = {'model': model, 'lr': 0.01, 'drop_rate': 0}
+model_config = {'model': model, 'lr': 0.005, 'drop_rate': 0.01}
 torch.cuda.empty_cache()
 print("Dataset {}, Model {}, Trial {}".format(dataset_name, model, 1))
 data.split(args.semi_supervised, 1)
