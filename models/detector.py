@@ -428,7 +428,6 @@ class RFDetector(BaseDetector):
         test_X = self.source_graph.ndata['feature'][self.test_mask].cpu().numpy()
         test_y = self.source_graph.ndata['label'][self.test_mask].cpu().numpy()
         weights = np.where(train_y == 0, 1, self.weight)
-        print(val_y)
         self.model.fit(train_X, train_y, sample_weight=weights)
         pred_val_y = self.model.predict_proba(val_X)[:, 1]
         pred_y = self.model.predict_proba(test_X)[:, 1]
